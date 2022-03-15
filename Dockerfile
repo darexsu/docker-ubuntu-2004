@@ -7,7 +7,7 @@ ENV ANSIBLE_USER=ansible SUDO_GROUP=sudo DEPLOY_GROUP=deployer
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \    
         systemd systemd-sysv systemd-cron \
-        apt-utils software-properties-common rsyslog sudo build-essential locales \
+        apt-utils dialog whiptail software-properties-common rsyslog sudo build-essential locales \
         libffi-dev libssl-dev libyaml-dev \
         python3 python3-dev python3-setuptools python3-pip python3-wheel python3-apt python3-yaml \
         net-tools iproute2 wget \
@@ -22,7 +22,8 @@ RUN apt-get update \
              /lib/systemd/system/systemd-update-utmp*
 
 RUN sed -i 's/^\($ModLoad imklog\)/#\1/' /etc/rsyslog.conf
-
+# Fix jdk installation issue
+RUN mkdir -p /usr/share/man/man1
 # Fix potential UTF-8 errors with ansible-test.
 RUN locale-gen en_US.UTF-8
 
